@@ -4,6 +4,7 @@ import logging, os, re, sys
 logger = logging.getLogger(__name__)
 import numpy as np
 from pathlib import Path
+import sys
 
 import torch
 from torch.utils.data import DataLoader
@@ -96,7 +97,7 @@ class DataSetup:
         if eval_asr:
             texts, tags = self.read_data(f"{split_name}.tsv")
         else:
-            texts, tags = self.read_data(f"{split_name}.{label_type}.tsv")
+            texts, tags = self.read_data(f"{split_name}_{label_type}.tsv")
 
         tag_id_fn = os.path.join(self.data_dir, f"{label_type}_tag2id.pkl")
         tag2id = load_pkl(tag_id_fn)
@@ -172,7 +173,7 @@ def train_module(
         output_dir=model_dir,  # output directory
         overwrite_output_dir=True,
         num_train_epochs=num_epochs,  # total number of training epochs
-        per_device_train_batch_size=16,  # batch size per device during training
+        per_device_train_batch_size=4,  # batch size per device during training 16
         per_device_eval_batch_size=64,  # batch size for evaluation
         warmup_steps=warmup_steps,  # number of warmup steps for learning rate scheduler
         weight_decay=0.01,  # strength of weight decay
@@ -533,9 +534,8 @@ class Eval:
 
         metrics_dct = eval_utils.get_ner_scores(all_gt, all_predictions)
         print(
-            "[micro-averaged F1-%s] Precision: %.2f, recall: %.2f, fscore = %.2f"
+            "[micro-averaged F1] Precision: %.4f, recall: %.4f, fscore = %.4f"
             % (
-                score_type,
                 metrics_dct["overall_micro"]["precision"],
                 metrics_dct["overall_micro"]["recall"],
                 metrics_dct["overall_micro"]["fscore"],

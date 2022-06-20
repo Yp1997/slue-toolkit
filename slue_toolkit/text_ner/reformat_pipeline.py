@@ -13,7 +13,7 @@ def prep_data(
     Create tsv files for pipeline evaluation from the decoded ASR transcripts
     """
     if "nolm" not in lm:
-        lm = "t3-b500-lw2-ws-1"
+        lm = "t3_3"
     manifest_data_fn = os.path.join(asr_data_dir, eval_set + ".wrd")
     decoded_data_dir = os.path.join(asr_model_dir, "decode", lm)
 
@@ -54,7 +54,6 @@ def get_correct_order(decoded_data_dir, manifest_data_fn, eval_set):
                 decoded_data_dir, f"hypo.word-checkpoint_best.pt-{eval_set}.txt"
             )
         )
-
         manifest_sent_lst = read_lst(manifest_data_fn)
 
         assert len(decoded_sent_lst_gt) == len(manifest_sent_lst)

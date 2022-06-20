@@ -31,13 +31,14 @@ def eval(
     eval_label="combined",
     lm="nolm",
     asr_model_type="w2v2-base",
-    save_results=False,
+    save_results=True,
 ):
     log_dir = os.path.join(model_dir, "metrics")
     if save_results:
         ner_results_dir = os.path.join(log_dir, "error_analysis")
         os.makedirs(ner_results_dir, exist_ok=True)
     os.makedirs(log_dir, exist_ok=True)
+    lm = lm.replace("/", "_")
 
     data_obj = NDM.DataSetup(data_dir, model_type)
 

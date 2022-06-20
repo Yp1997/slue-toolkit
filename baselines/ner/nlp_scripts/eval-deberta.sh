@@ -1,7 +1,7 @@
-model_type=$1
-eval_set=$2
-train_label=$3
-eval_label=$4
+model_type=$1 #deberta-base
+eval_set=$2 #dev
+train_label=$3 #raw
+eval_label=$4 #combined
 
 python slue_toolkit/text_ner/ner_deberta.py eval \
 --data_dir manifest/slue-voxpopuli/nlp_ner \
